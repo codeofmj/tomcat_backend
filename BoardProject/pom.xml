@@ -9,8 +9,13 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.smhrd</groupId>
-	<artifactId>board</artifactId>
+	
+	<!--board -> app으로 변경-->
+	<artifactId>app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	
+	<!--build 확장자-->
+	<packaging>jar</packaging>
 	<name>BoardProject</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>

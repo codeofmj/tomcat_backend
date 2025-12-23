@@ -32,8 +32,11 @@ public class BoardRestController {
 	
 	//게시글 작성요청
 	@PostMapping("/register")
-	public String register(@RequestBody Board vo) {
-		service.register(vo);
+	public String register(@RequestParam String b_title, @RequestParam String b_content, @RequestParam String b_writer) {
+		
+		System.out.println(b_title+"/"+b_content+"/"+b_writer);
+		
+		//service.register(vo);
 		return "success";
 	}
 	

@@ -3,9 +3,12 @@ package com.smhrd.board.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,64 +40,33 @@ public class BoardRestController {
 	//단, 요청을 하는 곳에서는 반드시 Content-Type:application/json 명시 필요
 	@PostMapping(value="/register", consumes="multipart/form-data")
 	public String register(@ModelAttribute BoardCreateRequest req) throws Exception {
-
 		try {
-			
 			service.register(req);
 			return "success";
-			
 		}catch (Exception e) {
-
 			e.printStackTrace();
 			return "fail";
 				
 		}
-
+	}		
+	
+	@GetMapping("/{b_idx}")
+	public Board getDetail(@PathVariable("b_idx") Long b_idx) {
+		Board vo = service.getDetail(b_idx);
+		System.out.println("조회된 데이터: "+vo);
+		
+		return vo;
 	}
 	
-	//게시글 작성요청(NCP Object Storage 저장)
-//	@PostMapping(value="/register", consumes="multipart/form-data")
-//	public String register(@ModelAttribute BoardCreateRequest req) throws Exception {
-//
-//		//업로드 후 저장될 파일의 경로
-//		String savedPath = null;
-//		
-//		//요청 DTO에서 파일 꺼내기
-//		MultipartFile file = req.getB_file();
-//		
-//		//파일이 존재하고, 비어있지 않다면
-//		if(file != null && !file.isEmpty()) {
-//			
-//			//1.파일명 충돌 방지를 위해 UUID에 원본파일명 조합
-//			String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-//			
-//			//2.NCP Object Storage 저장을 위한 객체 생성
-//			PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-//					.bucket(bucketName)
-//					.key(fileName)
-//					.contentType(file.getContentType())
-//					.acl(ObjectCannedACL.PUBLIC_READ)
-//					.build();
-//			
-//			s3Client.putObject(putObjectRequest, RequestBody.fromBytes(file.getBytes()));
-//			
-//			//3.DB에 저장할 경로 문자열 생성
-//			savedPath = "/uploads/" + fileName;
-//		}
-//		
-//		// DB 저장용 Entity로 변환
-//		Board board = new Board();
-//		board.setB_title(req.getB_title());
-//		board.setB_writer(req.getB_writer());
-//		board.setB_content(req.getB_content());
-//		board.setB_file_path(savedPath);
-//		
-//		// 실제 DB 저장
-//		service.register(board);
-//		
-//
-//		return "success";
-//	}
+	@GetMapping("/{b_idx}/download")
+	public ResponseEntity<Resource> download(@PathVariable("b_idx") Long id) {
+        try {
+			return service.downloadAttachment(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 		
+    }
 	
 }

@@ -79,6 +79,14 @@
 			<artifactId>spring-boot-starter-webmvc-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<!-- ncp object storage 연동 api(aws s3)-->
+		<dependency>
+		    <groupId>software.amazon.awssdk</groupId>
+		    <artifactId>s3</artifactId>
+		    <version>2.40.15</version>
+		    <scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

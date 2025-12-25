@@ -32,11 +32,14 @@ public class Board {
 	@Column(updatable = false) // 수정할 때 작성자는 변경 X
 	private String b_writer;
 	
+	@Column(length = 255)
+	private String b_file_path;
+	
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	@Column(insertable = false, updatable = false, columnDefinition = "datetime default now()") // 날짜는 입력X, 수정X, 자동으로 저장되게 설정  
 	private LocalDateTime b_datetime;
 	
-	@Column(insertable = false, updatable = false, columnDefinition = "int default 0")
+	@Column(insertable = false, updatable = false, columnDefinition = "bigint default 0")
 	private Long b_count; // 조회수 int -> Long 설정
 	
 }
